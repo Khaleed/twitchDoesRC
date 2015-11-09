@@ -1,8 +1,8 @@
 {
   "name": "twitchdoesrc",
   "version": "1.0.0",
-  "description": "collaborative game streame for twitch",
-  "main": "app.js",
+  "description": "chat-command controlled group activity",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,7 +18,6 @@
   "homepage": "https://github.com/Khaleed/twitchDoesRC#readme",
   "dependencies": {
     "express": "^4.13.3",
-    "socket.io": "^1.3.7",
-    "webpack": "^1.12.3"
+    "socket.io": "^1.3.7"
   }
 }
