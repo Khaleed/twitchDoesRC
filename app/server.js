@@ -38,9 +38,9 @@ db.close();
 // });
 
 var irc = require('irc');
-var channelOwner = 'username';
-var password = 'your oauth';
-var channel = '#user2';
+var channelOwner = process.env.TWITCH_USER;
+var password = process.env.TWITCH_AUTH;
+var channel = '#' + channelOwner;
 
 var options = {
 	userName: channelOwner, // mandatory
