@@ -14,22 +14,11 @@ var file = "data.db";
 var exists = fs.existsSync(file);
 
 db.serialize(function() {
-  if (!exists) {
-  	db.run("CREATE TABLE Game_Command_History (command TEXT)");
-  }
-  // put in 
-  var stmt = db.prepare("INSERT INTO Game_Command_History VALUES (?)");
-  for (var i = 0; i < 10; i++) {
-      stmt.run("Game_Command" + i);
-  }
-  stmt.finalize();
-  // select 
-  db.each("SELECT rowid AS id, info as avocado FROM lorem", function(err, row) {
-      console.log(row.id + ": " + row.avocado);
-  });
+	if (!exists) {
+		db.run("CREATE TABLE Game_Command_History (command TEXT, user TEXT)");
+	}
 });
 
-db.close();
 
 // redisClient.set("test-key", 3000, function () {
 // 	redisClient.get("test-key", function (err, val) {
@@ -76,6 +65,21 @@ client.connect(function() {
 			if (from !== channelOwner) {
 				client.say(channel, message);
 			}
+
+			// put in db
+			db.serialize(function() {
+
+				var stmt = db.prepare("INSERT INTO Game_Command_History VALUES (?, ?)");
+				stmt.run("msg:" + message, from);
+				stmt.finalize();
+
+
+				db.each("SELECT rowid AS id, command FROM Game_Command_History", function(err, row) {
+					console.log(row);
+					console.log(row.id + ": " + row.command + ": " + row.user);
+				});
+			});
+			db.close();
 		});
 	});
 });
