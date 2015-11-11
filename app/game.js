@@ -13,7 +13,6 @@ exports.isValidMove = function() {
 			return true;
 		} else {
 			console.log("illegal move " + move);
-
 			return false;
 		}
 	};
