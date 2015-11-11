@@ -2,23 +2,27 @@
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
-var io = require('socket.io')(server); // initialise a new instance of io and pass http server
+var io = require('socket.io')(server);
+var irc = require('irc');
+var fs = require("fs");
+// writing asyn funcs using threadpool removes stack trace info
+// see errors but not which statement caused it
+// to resolve this issue -> verbose() 
+var sqlite3 = require('sqlite3').verbose(); 
+var config = require('../config/config_local.json');
 var port = process.env.port || 3000;
 // var redis = require("redis");
-var config = require('../config/config_local.json');
 // var redisClient = redis.createClient(config.redis);
-var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('data.db');
-var fs = require("fs");
-var file = "data.db";
-var exists = fs.existsSync(file);
-
-db.serialize(function() {
-	if (!exists) {
-		db.run("CREATE TABLE Game_Command_History (command TEXT, user TEXT)");
-	}
+// return true if the file exists 
+fs.exists('data.db', function(exists) {
+	db.serialize(function() {
+		if (!exists) {
+			// create a table called Game_Command_History
+			db.run("CREATE TABLE Game_Command_History (command TEXT, user TEXT)");
+		}
+	});
 });
-
 
 // redisClient.set("test-key", 3000, function () {
 // 	redisClient.get("test-key", function (err, val) {
@@ -26,7 +30,6 @@ db.serialize(function() {
 // 	});
 // });
 
-var irc = require('irc');
 var channelOwner = process.env.TWITCH_USER;
 var password = process.env.TWITCH_AUTH;
 var channel = '#' + channelOwner;
@@ -65,16 +68,14 @@ client.connect(function() {
 			if (from !== channelOwner) {
 				client.say(channel, message);
 			}
-
 			// put in db
 			db.serialize(function() {
-
+				// preparing a statement
 				var stmt = db.prepare("INSERT INTO Game_Command_History VALUES (?, ?)");
 				stmt.run("msg:" + message, from);
 				stmt.finalize();
-
-
-				db.each("SELECT rowid AS id, command FROM Game_Command_History", function(err, row) {
+				// give me these things in the db - query Game_Command_History
+				db.each("SELECT rowid AS id, command, user FROM Game_Command_History", function(err, row) {
 					console.log(row);
 					console.log(row.id + ": " + row.command + ": " + row.user);
 				});
