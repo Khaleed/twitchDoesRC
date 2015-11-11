@@ -66,16 +66,17 @@ var consumeVotes = function() {
 	for (var key in currentVotes) {
 		if (Object.prototype.hasOwnProperty.call(currentVotes, key)) {
 			votes.push(currentVotes[key]);
+			console.log("votes are: ", votes);
 		}
 	}
 
 	// here's where we'd get the valid ones
-	var legalMoves = game.getValidMoves(currentVotes);
-	console.log(currentVotes);
+	var legalMoves = game.getValidMoves(votes);
+	console.log("legalMoves are: ", legalMoves);
 	currentVotes = {};
 };
 
-setInterval(consumeVotes, 5000);
+setInterval(consumeVotes, 15000);
 
 // var aggregateVote = function() {
 

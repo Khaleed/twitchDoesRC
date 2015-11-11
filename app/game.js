@@ -19,12 +19,10 @@ exports.isValidMove = function() {
 	};
 }();
 
-exports.getValidMoves = function() {
+exports.getValidMoves = function(moves) {
 
 	// moves is an array of messages.
-	return function(moves) {
- 		return moves.filter(isValidMove);
-	}
+ 	return moves.filter(exports.isValidMove);
 };
 
 
