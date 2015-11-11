@@ -64,6 +64,10 @@ var consumeVotes = function () {
 };
 setInterval(consumeVotes, 5000);
 
+var aggregateVote = function () {
+
+};
+
 client.connect(function() {
 	console.log(channel);
 	client.join(channel, function() {

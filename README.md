@@ -1,8 +1,8 @@
 # twitchdoesrc
 
-This is an experiment to stream a multiple player chat-command controlled activity using Node, Express, Twitch, IRC Protocol, Socket.IO, and Redis. 
+This is an experiment to stream a multiple player chat-command controlled activity using Node, Express, Twitch, IRC Protocol, Socket.IO, Redis, SQLite. 
 
-The back-end is written in a functional JavaScript style using persistent data structures from the MORI ClojureScript library.  
+This will eventually be written in a functional JavaScript style using persistent data structures from the MORI ClojureScript library.  
 
 ## How To Message Someone on Twitch
 
