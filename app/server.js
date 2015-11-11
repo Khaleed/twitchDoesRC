@@ -8,22 +8,21 @@ var fs = require("fs");
 // writing asyn funcs using threadpool removes stack trace info
 // see errors but not which statement caused it
 // to resolve this issue -> verbose() 
-var sqlite3 = require('sqlite3').verbose(); 
+// var sqlite3 = require('sqlite3').verbose(); 
 var config = require('../config/config_local.json');
 var port = process.env.port || 3000;
 // var redis = require("redis");
 // var redisClient = redis.createClient(config.redis);
-var db = new sqlite3.Database('data.db');
+// var db = new sqlite3.Database('data.db');
 // return true if the file exists 
-fs.exists('data.db', function(exists) {
-	db.serialize(function() {
-		if (!exists) {
-			// create a table called Game_Command_History
-			db.run("CREATE TABLE Game_Command_History (command TEXT, user TEXT)");
-		}
-	});
-});
-
+// fs.exists('data.db', function(exists) {
+// 	db.serialize(function() {
+// 		if (!exists) {
+// 			// create a table called Game_Command_History
+// 			db.run("CREATE TABLE Game_Command_History (command TEXT, user TEXT)");
+// 		}
+// 	});
+// });
 // redisClient.set("test-key", 3000, function () {
 // 	redisClient.get("test-key", function (err, val) {
 // 		console.log("val is " + val);
@@ -58,29 +57,35 @@ var options = {
 };
 // talk to twitch 
 var client = new irc.Client('irc.twitch.tv', channelOwner, options);
+var currentVotes = {};
 
 client.connect(function() {
 	console.log(channel);
 	client.join(channel, function() {
 		client.say(channel, "Hello Twitch!");
 		client.addListener('message', function(from, to, message) {
-			console.log(from, to, message);
 			if (from !== channelOwner) {
-				client.say(channel, message);
+				// global map of all msg
+				currentVotes[from] = message;
+				console.log(currentVotes);
 			}
-			// put in db
-			db.serialize(function() {
-				// preparing a statement
-				var stmt = db.prepare("INSERT INTO Game_Command_History VALUES (?, ?)");
-				stmt.run("msg:" + message, from);
-				stmt.finalize();
-				// give me these things in the db - query Game_Command_History
-				db.each("SELECT rowid AS id, command, user FROM Game_Command_History", function(err, row) {
-					console.log(row);
-					console.log(row.id + ": " + row.command + ": " + row.user);
-				});
-			});
-			db.close();
+			console.log(from, to, message);
+			// if (from !== channelOwner) {
+			// 	client.say(channel, message);
+			// }
+			// // put in db
+			// db.serialize(function() {
+			// 	// preparing a statement
+			// 	var stmt = db.prepare("INSERT INTO Game_Command_History VALUES (?, ?)");
+			// 	stmt.run("msg:" + message, from);
+			// 	stmt.finalize();
+			// 	// give me these things in the db - query Game_Command_History
+			// 	db.each("SELECT rowid AS id, command, user FROM Game_Command_History", function(err, row) {
+			// 		console.log(row);
+			// 		console.log(row.id + ": " + row.command + ": " + row.user);
+			// 	});
+			// });
+			// db.close();
 		});
 	});
 });
