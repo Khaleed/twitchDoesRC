@@ -58,6 +58,11 @@ var options = {
 // talk to twitch 
 var client = new irc.Client('irc.twitch.tv', channelOwner, options);
 var currentVotes = {};
+var consumeVotes = function () {
+	console.log(currentVotes);
+	currentVotes = {};
+};
+setInterval(consumeVotes, 5000);
 
 client.connect(function() {
 	console.log(channel);
@@ -67,7 +72,6 @@ client.connect(function() {
 			if (from !== channelOwner) {
 				// global map of all msg
 				currentVotes[from] = message;
-				console.log(currentVotes);
 			}
 			console.log(from, to, message);
 			// if (from !== channelOwner) {
