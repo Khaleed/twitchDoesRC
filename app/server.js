@@ -5,6 +5,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var irc = require('irc');
 var fs = require("fs");
+var game = require('./game');
 // writing asyn funcs using threadpool removes stack trace info
 // see errors but not which statement caused it
 // to resolve this issue -> verbose() 
@@ -58,15 +59,28 @@ var options = {
 // talk to twitch 
 var client = new irc.Client('irc.twitch.tv', channelOwner, options);
 var currentVotes = {};
-var consumeVotes = function () {
-	console.log(currentVotes);
+var consumeVotes = function() {
+
+	var votes = [];
+
+	for (var key in currentVotes) {
+		if (Object.prototype.hasOwnProperty.call(currentVotes, key)) {
+			votes.push(currentVotes[key]);
+			console.log("votes are: ", votes);
+		}
+	}
+
+	// here's where we'd get the valid ones
+	var legalMoves = game.getValidMoves(votes);
+	console.log("legalMoves are: ", legalMoves);
 	currentVotes = {};
 };
-setInterval(consumeVotes, 5000);
 
-var aggregateVote = function () {
+setInterval(consumeVotes, 15000);
 
-};
+// var aggregateVote = function() {
+
+// };
 
 client.connect(function() {
 	console.log(channel);
