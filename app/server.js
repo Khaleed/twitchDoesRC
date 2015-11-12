@@ -14,9 +14,9 @@
  // // var sqlite3 = require('sqlite3').verbose();
  var config = require('../config/config_local.json');
  // var port = process.env.port || 3000;
- var redis = require("redis");
- var redisClient = redis.createClient(config.redis);
- // var db = new sqlite3.Database('data.db');
+ // var redis = require("redis");
+ // var redisClient = redis.createClient(config.redis);
+ // // var db = new sqlite3.Database('data.db');
  // return true if the file exists
  // fs.exists('data.db', function(exists) {
  //  db.serialize(function() {
@@ -26,15 +26,15 @@
  //      }
  //  });
  // }); 
- redisClient.set("test-key", 'wow', function () {      // redis works
-  redisClient.get("test-key", function (err, val) {
-  	if (err) {
-  		console.error(err);
-  	} else {  		
-      console.log("val is ", val);  		
-  	}
-  	});
-  });
+ // redisClient.set("test-key", 'wow', function () {      // redis works
+ //  redisClient.get("test-key", function (err, val) {
+ //  	if (err) {
+ //  		console.error(err);
+ //  	} else {  		
+ //      console.log("val is ", val);  		
+ //  	}
+ //  	});
+ //  });
 
  var channelOwner = process.env.TWITCH_USER;
  var password = process.env.TWITCH_AUTH;
@@ -73,7 +73,7 @@
  	});
  	// here's where we'd get the valid ones
  	var legalMoves = game.getValidMoves(votes);
- 	console.log(chalk.green("legalMoves are: "), legalMoves);
+ 	// console.log(chalk.green("legalMoves are: "), legalMoves);
  	console.log(countVotes(legalMoves));
  	currentVotes = {};
  };
@@ -91,6 +91,43 @@
  		return result;
  	}, {});
  };
+
+ var sortVotes = function(votes) {
+ 	
+ 	var sortedVotes = [];
+ 	var done = false;
+
+ 	Object.keys(votes).forEach(function(language) {
+ 		
+ 		for (var i = 0; i < sortedVotes.length && !done; i++) {
+ 			console.log("language", language, "votes[language]", votes[language]);
+ 			if (sortedVotes.length === 0) {
+ 				sortedVotes.push({
+ 					"langName": language,
+ 					"totalVotes": votes[language]
+ 				});
+ 				done = true;
+ 			} else if (votes[language] > sortedVotes[i]["totalVotes"]) {
+ 				sortedVotes.splice(i, 0, {
+ 					"langName": language,
+ 					"totalVotes": votes[language]
+ 				});
+ 				done = true;
+ 			}
+ 		}
+ 		if (!done) {
+ 			sortedVotes.push({
+ 				"langName": language,
+ 				"totalVotes": votes[language]
+ 			});
+ 		}
+ 		done = false;
+ 	});
+
+ 	return (sortedVotes);
+ };
+
+console.log(sortVotes(values));
 
  client.connect(function() {
  	console.log(channel);
