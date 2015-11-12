@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Khaleed/twitchDoesRC#readme",
   "dependencies": {
+    "chalk": "^1.1.1",
     "express": "^4.13.3",
     "irc": "^0.4.0",
     "redis": "^2.3.0",

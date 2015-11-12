@@ -1,21 +1,21 @@
  "use strict";
 
- // listener for receiving messages
- // var express = require('express');
- // var app = express();
- // var server = require('http').Server(app);
- // var io = require('socket.io')(server);
+ var express = require('express');
+ var app = express();
+ var server = require('http').Server(app);
+ var io = require('socket.io')(server);
  var irc = require('irc');
- // var fs = require("fs");
+ var fs = require("fs");
  var game = require('./game');
+ var chalk = require('chalk');
  // writing asyn funcs using threadpool removes stack trace info
  // see errors but not which statement caused it
  // to resolve this issue -> verbose()
- // var sqlite3 = require('sqlite3').verbose();
- // var config = require('../config/config_local.json');
+ // // var sqlite3 = require('sqlite3').verbose();
+ var config = require('../config/config_local.json');
  // var port = process.env.port || 3000;
- // var redis = require("redis");
- // var redisClient = redis.createClient(config.redis);
+ var redis = require("redis");
+ var redisClient = redis.createClient(config.redis);
  // var db = new sqlite3.Database('data.db');
  // return true if the file exists
  // fs.exists('data.db', function(exists) {
@@ -25,12 +25,16 @@
  //          db.run("CREATE TABLE Game_Command_History (command TEXT, user TEXT)");
  //      }
  //  });
- // });
- // redisClient.set("test-key", 3000, function () {
- //  redisClient.get("test-key", function (err, val) {
- //      console.log("val is " + val);
- //  });
- // });
+ // }); 
+ redisClient.set("test-key", 'wow', function () {      // redis works
+  redisClient.get("test-key", function (err, val) {
+  	if (err) {
+  		console.error(err);
+  	} else {  		
+      console.log("val is ", val);  		
+  	}
+  	});
+  });
 
  var channelOwner = process.env.TWITCH_USER;
  var password = process.env.TWITCH_AUTH;
@@ -62,17 +66,14 @@
  var client = new irc.Client('irc.twitch.tv', channelOwner, options);
  var currentVotes = {};
  var consumeVotes = function() {
- 	"use strict";
  	var votes = [];
-
  	Object.keys(currentVotes).forEach(function(key) {
  		votes.push(currentVotes[key]);
  		console.log("votes are: ", votes);
  	});
-
  	// here's where we'd get the valid ones
  	var legalMoves = game.getValidMoves(votes);
- 	console.log("legalMoves are: ", legalMoves);
+ 	console.log(chalk.green("legalMoves are: "), legalMoves);
  	console.log(countVotes(legalMoves));
  	currentVotes = {};
  };
@@ -100,7 +101,7 @@
  				// global map of all msg
  				currentVotes[from] = message;
  			}
- 			console.log(from, to, message);
+ 			console.log(chalk.blue(from), chalk.magenta(to), message);
  			// if (from !== channelOwner) {
  			//  client.say(channel, message);
  			// }
