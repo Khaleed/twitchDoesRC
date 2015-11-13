@@ -35,7 +35,7 @@
  //  	}
  //  	});
  //  });
-
+// secrets in env variables
  let channelOwner = process.env.TWITCH_USER;
  let password = process.env.TWITCH_AUTH;
  let channel = '#' + channelOwner;
@@ -81,7 +81,7 @@
  // time stamp for every 10 secs
  setInterval(consumeVotes, 10000);
 
- let countVotes = function(voteList) {
+ let countVotes = voteList => {
  	return voteList.reduce((result, current) => {
  		console.log(result, current, voteList);
  		if (typeof(result[current]) === "undefined") {
@@ -93,7 +93,7 @@
  	}, {});
  };
 
- let sortVotes = function(votes) {
+ let sortVotes = votes => {
 
  	let sortedVotes = [];
  	let done = false;
@@ -142,7 +142,7 @@
  	console.log(channel);
  	client.join(channel, function() {
  		client.say(channel, "Hello Twitch!");
- 		client.addListener('message', function(from, to, message) {
+ 		client.addListener('message', (from, to, message) => {
  			if (from !== channelOwner) {
  				// global map of all msg
  				currentVotes[from] = message;
