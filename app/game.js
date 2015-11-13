@@ -1,3 +1,5 @@
+"use strict";
+
 exports.isValidMove = function() {
 	var legalMoves = {
 		'k': "UP",
