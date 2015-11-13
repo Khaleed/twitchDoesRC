@@ -1,6 +1,6 @@
  "use strict";
 
- var express = require('express');
+var express = require('express');
  var app = express();
  var server = require('http').Server(app);
  var io = require('socket.io')(server);
@@ -73,15 +73,16 @@
  	});
  	// here's where we'd get the valid ones
  	var legalMoves = game.getValidMoves(votes);
- 	// console.log(chalk.green("legalMoves are: "), legalMoves);
- 	console.log(countVotes(legalMoves));
+ 	console.log(chalk.green("legalMoves are: "), legalMoves);
+ 	console.log(sortVotes(countVotes(legalMoves)));
  	currentVotes = {};
  };
 
- setInterval(consumeVotes, 15000);
+ // time stamp for every 10 secs
+ setInterval(consumeVotes, 10000);
 
- var countVotes = function(voteList) {
- 	return voteList.reduce(function(result, current) {
+ let countVotes = function(voteList) {
+ 	return voteList.reduce((result, current) => {
  		console.log(result, current, voteList);
  		if (typeof(result[current]) === "undefined") {
  			result[current] = 1;
@@ -93,12 +94,12 @@
  };
 
  var sortVotes = function(votes) {
- 	
+
  	var sortedVotes = [];
  	var done = false;
 
  	Object.keys(votes).forEach(function(language) {
- 		
+
  		for (var i = 0; i < sortedVotes.length && !done; i++) {
  			console.log("language", language, "votes[language]", votes[language]);
  			if (sortedVotes.length === 0) {
@@ -115,6 +116,7 @@
  				done = true;
  			}
  		}
+
  		if (!done) {
  			sortedVotes.push({
  				"langName": language,
@@ -124,10 +126,17 @@
  		done = false;
  	});
 
- 	return (sortedVotes);
+ 	return sortedVotes;
  };
 
-console.log(sortVotes(values));
+ var printVotes = function(sortedVotes) {
+ 	sortedVotes.forEach(function(current, indx) {
+ 		if (indx === 0) {
+ 			// print obj int the array
+ 			console.log(chalk.green(current.langName), current.totalVotes);
+ 		}
+ 	});
+ };
 
  client.connect(function() {
  	console.log(channel);
