@@ -1,18 +1,18 @@
  "use strict";
-
-var express = require('express');
- var app = express();
- var server = require('http').Server(app);
- var io = require('socket.io')(server);
- var irc = require('irc');
- var fs = require("fs");
- var game = require('./game');
- var chalk = require('chalk');
+ 
+ let express = require('express');
+ let app = express();
+ let server = require('http').Server(app);
+ let io = require('socket.io')(server);
+ let irc = require('irc');
+ let fs = require("fs");
+ let game = require('./game');
+ let chalk = require('chalk');
  // writing asyn funcs using threadpool removes stack trace info
  // see errors but not which statement caused it
  // to resolve this issue -> verbose()
  // // var sqlite3 = require('sqlite3').verbose();
- var config = require('../config/config_local.json');
+ let config = require('../config/config_local.json');
  // var port = process.env.port || 3000;
  // var redis = require("redis");
  // var redisClient = redis.createClient(config.redis);
@@ -36,11 +36,11 @@ var express = require('express');
  //  	});
  //  });
 
- var channelOwner = process.env.TWITCH_USER;
- var password = process.env.TWITCH_AUTH;
- var channel = '#' + channelOwner;
+ let channelOwner = process.env.TWITCH_USER;
+ let password = process.env.TWITCH_AUTH;
+ let channel = '#' + channelOwner;
 
- var options = {
+ let options = {
  	userName: channelOwner, // mandatory
  	realName: 'nodeJS IRC client',
  	// port: 6667,
@@ -63,16 +63,16 @@ var express = require('express');
  		// encoding: ''
  };
  // talk to twitch
- var client = new irc.Client('irc.twitch.tv', channelOwner, options);
- var currentVotes = {};
- var consumeVotes = function() {
- 	var votes = [];
- 	Object.keys(currentVotes).forEach(function(key) {
+ let client = new irc.Client('irc.twitch.tv', channelOwner, options);
+ let currentVotes = {};
+ let consumeVotes = function() {
+ 	let votes = [];
+ 	Object.keys(currentVotes).forEach(key => {
  		votes.push(currentVotes[key]);
  		console.log("votes are: ", votes);
  	});
  	// here's where we'd get the valid ones
- 	var legalMoves = game.getValidMoves(votes);
+ 	let legalMoves = game.getValidMoves(votes);
  	console.log(chalk.green("legalMoves are: "), legalMoves);
  	console.log(sortVotes(countVotes(legalMoves)));
  	currentVotes = {};
@@ -93,14 +93,14 @@ var express = require('express');
  	}, {});
  };
 
- var sortVotes = function(votes) {
+ let sortVotes = function(votes) {
 
- 	var sortedVotes = [];
- 	var done = false;
+ 	let sortedVotes = [];
+ 	let done = false;
 
- 	Object.keys(votes).forEach(function(language) {
+ 	Object.keys(votes).forEach(language => {
 
- 		for (var i = 0; i < sortedVotes.length && !done; i++) {
+ 		for (let i = 0; i < sortedVotes.length && !done; i++) {
  			console.log("language", language, "votes[language]", votes[language]);
  			if (sortedVotes.length === 0) {
  				sortedVotes.push({
@@ -129,8 +129,8 @@ var express = require('express');
  	return sortedVotes;
  };
 
- var printVotes = function(sortedVotes) {
- 	sortedVotes.forEach(function(current, indx) {
+ let printVotes = sortedVotes => {
+ 	sortedVotes.forEach((current, indx) => {
  		if (indx === 0) {
  			// print obj int the array
  			console.log(chalk.green(current.langName), current.totalVotes);
@@ -154,7 +154,7 @@ var express = require('express');
  			// // put in db
  			// db.serialize(function() {
  			//  // preparing a statement
- 			//  var stmt = db.prepare("INSERT INTO Game_Command_History VALUES (?, ?)");
+ 			//  let stmt = db.prepare("INSERT INTO Game_Command_History VALUES (?, ?)");
  			//  stmt.run("msg:" + message, from);
  			//  stmt.finalize();
  			//  // give me these things in the db - query Game_Command_History
