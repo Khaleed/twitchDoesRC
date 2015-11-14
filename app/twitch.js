@@ -58,7 +58,7 @@ let getTwitchMsgs = function() {
 	// let legalMoves = game.getValidMoves(votes);
 	// console.log(chalk.green("legalMoves are: "), legalMoves);
 	// console.log(sortVotes(countVotes(legalMoves)));
-	currentVotes = {};
+	currentMessages = {};
 	return msg;
 };
 
