@@ -7,30 +7,23 @@
  let fs = require("fs");
  let game = require('./game');
  let chalk = require('chalk');
+ let mori = require('mori'); // persistent data structures
  // let config = require('../config/config_local.json');
- // var port = process.env.port || 3000;
- // var redis = require("redis");
- // var redisClient = redis.createClient(config.redis);
- // // var db = new sqlite3.Database('data.db');
- // return true if the file exists
- // fs.exists('data.db', function(exists) {
- //  db.serialize(function() {
- //      if (!exists) {
- //          // create a table called Game_Command_History
- //          db.run("CREATE TABLE Game_Command_History (command TEXT, user TEXT)");
- //      }
- //  });
- // }); 
- // redisClient.set("test-key", 'wow', function () {      // redis works
- //  redisClient.get("test-key", function (err, val) {
- //  	if (err) {
- //  		console.error(err);
- //  	} else {  		
- //      console.log("val is ", val);  		
- //  	}
- //  	});
- //  });
- 
+ let port = process.env.port || 3000;
+ // let redis = require("redis");
+ // let redisClient = redis.createClient(config.redis);
+
+
+ // redisClient.set("test-key", 'wow', function() { // redis works
+ // 	redisClient.get("test-key", function(err, val) {
+ // 		if (err) {
+ // 			console.error(err);
+ // 		} else {
+ // 			console.log("val is ", val);
+ // 		}
+ // 	});
+ // });
+
  // time stamp for every 10 secs
  setInterval(consumeVotes, 10000);
 
@@ -46,6 +39,7 @@
  	}, {});
  };
 
+ // Kara's implementation of insertion sort
  let sortVotes = votes => {
 
  	let sortedVotes = [];
@@ -78,7 +72,6 @@
  		}
  		done = false;
  	});
-
  	return sortedVotes;
  };
 
