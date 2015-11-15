@@ -1,7 +1,7 @@
 // basic IRC client functionality
 let irc = require('irc');
 let chalk = require('chalk');
-
+let config = require('./config.js');
 // let db = new sqlite3.Database('data.db');
 // writing asyn funcs using threadpool removes stack trace info
 // you can see errors but not which statement caused it
@@ -12,29 +12,6 @@ let chalk = require('chalk');
 let channelOwner = process.env.TWITCH_USER;
 let password = process.env.TWITCH_AUTH;
 let channel = '#' + channelOwner;
-let options = {
-	userName: channelOwner, // mandatory
-	realName: 'nodeJS IRC client',
-	// port: 6667,
-	// localAddress: null,
-	debug: true,
-	showErrors: true,
-	// autoRejoin: false,
-	autoConnect: false,
-	// channels: [channel],
-	// secure: false,
-	// selfSigned: falsße,
-	// certExpired: false,
-	// floodProtection: false,
-	// floodProtectionDelay: 1000,
-	sasl: true, // mandatory
-	password: password // twitch token
-		// stripColors: false,
-		// channelPrefixes: "&#",
-		// messageSplit: 512,
-		// encoding: ''
-};
-
 // fs.exists('data.db', function(exists) {
 // 	db.serialize(function() {
 // 		if (!exists) {
