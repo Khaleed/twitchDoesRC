@@ -7,6 +7,9 @@
  let fs = require("fs");
  let game = require('./game');
  let chalk = require('chalk');
+ let twitch = require('./twitch');
+ let twitchIrcFeed = twitch.twitchIrcFeed;
+ let getMsgs = twitch.getMsgs;
  let mori = require('mori'); // persistent data structures
  // let config = require('../config/config_local.json');
  let port = process.env.port || 3000;
@@ -27,7 +30,7 @@
  // time stamp for every 10 secs
  setInterval(consumeVotes, 10000);
 
- let countVotes = voteList => {
+let countVotes = voteList => {
  	return voteList.reduce((result, current) => {
  		console.log(result, current, voteList);
  		if (typeof(result[current]) === "undefined") {
