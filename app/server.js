@@ -27,10 +27,12 @@
  // 	});
  // });
 
- // time stamp for every 10 secs
- setInterval(consumeVotes, 10000);
+ 
 
-let countVotes = voteList => {
+ // time stamp for every 10 secs
+ setInterval(consumeMsgs, 10000);
+
+ let countVotes = voteList => {
  	return voteList.reduce((result, current) => {
  		console.log(result, current, voteList);
  		if (typeof(result[current]) === "undefined") {

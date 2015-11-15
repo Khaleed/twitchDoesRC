@@ -1,6 +1,7 @@
 "use strict";
 
-exports.isValidMove = function() {
+export isValidMove = () => {
+
 	var legalMoves = {
 		'k': "UP",
 		'j': "DOWN",
@@ -20,7 +21,7 @@ exports.isValidMove = function() {
 };
 }();
 
-exports.getValidMoves = function(moves) {
+export getValidMoves = moves => {
 
 	// moves is an array of messages.
  	return moves.filter(exports.isValidMove);
