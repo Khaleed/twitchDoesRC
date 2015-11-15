@@ -8,10 +8,6 @@ let config = require('./config.js');
 // to resolve this issue -> verbose()
 // let sqlite3 = require('sqlite3').verbose();
 
-// secrets in env variables
-let channelOwner = process.env.TWITCH_USER;
-let password = process.env.TWITCH_AUTH;
-let channel = '#' + channelOwner;
 // fs.exists('data.db', function(exists) {
 // 	db.serialize(function() {
 // 		if (!exists) {
