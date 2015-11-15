@@ -7,6 +7,7 @@
  let fs = require("fs");
  let game = require('./game');
  let chalk = require('chalk');
+ let currentMsgs = [];
  let twitch = require('./twitch');
  let twitchIrcFeed = twitch.twitchIrcFeed;
  let getMsgs = twitch.getMsgs;
@@ -27,9 +28,14 @@
  // 	});
  // });
 
+ let consumeMsgs = msgs => {
+ 	let votes = [];
+ 	Object.keys(msgs).forEach(key => {
+ 		votes.push(msgs[key]);
+ 	});
+ };
  
-
- // time stamp for every 10 secs
+ // time stamp for msgs
  setInterval(consumeMsgs, 10000);
 
  let countVotes = voteList => {

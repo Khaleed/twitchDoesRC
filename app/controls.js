@@ -1,7 +1,11 @@
 "use strict";
 
-export isValidMove = () => {
-
+export default function isValidMove () {
+	// this could be a tool to learn to code
+	// where the commands are basic functions
+	// moveLeft()
+	// moveRight()
+	// etc
 	var legalMoves = {
 		'k': "UP",
 		'j': "DOWN",
@@ -18,11 +22,9 @@ export isValidMove = () => {
 	// 	// 	console.log("illegal move " + move);
 	// 	// 	return false;
 	// 	// }
-};
 }();
 
-export getValidMoves = moves => {
-
+export default function getValidMoves (moves) {
 	// moves is an array of messages.
  	return moves.filter(exports.isValidMove);
 };
