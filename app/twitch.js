@@ -18,7 +18,6 @@ var currentVotes = {};
 var start = function() {
 	// talk to twitch
 	var client = new irc.Client('irc.twitch.tv', channelOwner, options);
-
 	client.connect(function() {
 		console.log(channel);
 		client.join(channel, function() {
@@ -28,6 +27,7 @@ var start = function() {
 					// global map of all msg
 					currentVotes[from] = message;
 				}
+				// put redis stuff here
 				console.log(from, to, message);
 			});
 		});
