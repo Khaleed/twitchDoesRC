@@ -12,7 +12,6 @@ export default function isValidMove () {
 		'h': "LEFT",
 		'l': "RIGHT"
 };
-
 	return function(move) {
 	// 	// if (legalMoves[move]) {
 	return true;

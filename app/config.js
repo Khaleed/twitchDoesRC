@@ -1,7 +1,6 @@
 // secrets in env variables
 let channelOwner = process.env.TWITCH_USER;
 let password = process.env.TWITCH_AUTH;
-let channel = '#' + channelOwner;
 
 let options = {
 	userName: channelOwner, // mandatory

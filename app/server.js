@@ -14,6 +14,7 @@
  let mori = require('mori'); // persistent data structures
  // let config = require('../config/config_local.json');
  let port = process.env.port || 3000;
+ let keyhandlers = require('./keyhandler');
  // let redis = require("redis");
  // let redisClient = redis.createClient(config.redis);
 
@@ -34,7 +35,7 @@
  		votes.push(msgs[key]);
  	});
  };
- 
+
  // time stamp for msgs
  setInterval(consumeMsgs, 10000);
 
@@ -90,6 +91,7 @@
  	sortedVotes.forEach((current, indx) => {
  		if (indx === 0) {
  			// print obj int the array
+ 			// maps and call keys
  			console.log(chalk.green(current.langName), current.totalVotes);
  		}
  	});

@@ -1,7 +1,8 @@
 // basic IRC client functionality
 let irc = require('irc');
 let chalk = require('chalk');
-let config = require('./config.js');
+let config = require('./config.js'); 
+let channel = '#' + channelOwner;
 // let db = new sqlite3.Database('data.db');
 // writing asyn funcs using threadpool removes stack trace info
 // you can see errors but not which statement caused it
@@ -17,8 +18,8 @@ let config = require('./config.js');
 // 	});
 // });
 
-// talk to twitch by connecting to an IRC server
-let client = new irc.Client('irc.twitch.tv', channelOwner, options);
+// talk to twitch by connecting to an IRC server (this is where)
+let client = new irc.Client('irc.twitch.tv', channelOwner, config.options);
 
 // let putMsgInDb = () => {
 // 	// put in db
@@ -51,7 +52,6 @@ let getMsgs = () => {
 let twitchIrcFeed = () => {
 
 	client.connect(function() {
-		console.log(channel);
 		client.join(channel, function() {
 			client.say(channel, "Hello Twitch!");
 			client.addListener('message', (from, to, message) => {
