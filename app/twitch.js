@@ -21,8 +21,8 @@ let channel = '#' + channelOwner;
 // talk to twitch by connecting to an IRC server (this is where)
 let client = new irc.Client('irc.twitch.tv', channelOwner, config.options);
 
-// let putMsgInDb = () => {
-// 	// put in db
+// // let putMsgInDb = () => {
+// // 	// put in db
 // 	db.serialize(function() {
 // 		// preparing a statement
 // 		let stmt = db.prepare("INSERT INTO Game_Command_History VALUES (?, ?)");

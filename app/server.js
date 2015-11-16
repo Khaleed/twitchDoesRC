@@ -1,20 +1,20 @@
  "use strict";
 
- let express = require('express');
- let app = express();
- let server = require('http').Server(app);
- let io = require('socket.io')(server);
- let fs = require("fs");
- let game = require('./game');
+ // let express = require('express');
+ // let app = express();
+ // let server = require('http').Server(app);
+ // let io = require('socket.io')(server);
+ // let fs = require("fs");
+ // let game = require('./game');
  let chalk = require('chalk');
  let currentMsgs = [];
  let twitch = require('./twitch');
  let twitchIrcFeed = twitch.twitchIrcFeed;
  let getMsgs = twitch.getMsgs;
- let mori = require('mori'); // persistent data structures
+ // let mori = require('mori'); // persistent data structures
  // let config = require('../config/config_local.json');
- let port = process.env.port || 3000;
- let keyhandlers = require('./keyhandler');
+ // let port = process.env.port || 3000;
+ // let keyhandlers = require('./keyhandler');
  // let redis = require("redis");
  // let redisClient = redis.createClient(config.redis);
 
