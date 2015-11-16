@@ -4,10 +4,10 @@
  var app = express();
  var server = require('http').Server(app);
  var io = require('socket.io')(server);
- var irc = require('irc');
  var fs = require("fs");
  var game = require('./game');
  var chalk = require('chalk');
+ var twitch = require('./twitch');
  // writing asyn funcs using threadpool removes stack trace info
  // see errors but not which statement caused it
  // to resolve this issue -> verbose()
@@ -34,48 +34,35 @@
  //      console.log("val is ", val);  		
  //  	}
  //  	});
+
+ // // put in db
+ // db.serialize(function() {
+ //  // preparing a statement
+ //  var stmt = db.prepare("INSERT INTO Game_Command_History VALUES (?, ?)");
+ //  stmt.run("msg:" + message, from);
+ //  stmt.finalize();
+ //  // give me these things in the db - query Game_Command_History
+ //  db.each("SELECT rowid AS id, command, user FROM Game_Command_History", function(err, row) {
+ //      console.log(row);
+ //      console.log(row.id + ": " + row.command + ": " + row.user);
  //  });
+ // });
+ // db.close();
 
- var channelOwner = process.env.TWITCH_USER;
- var password = process.env.TWITCH_AUTH;
- var channel = '#' + channelOwner;
+ // tell client to connect
+ twitch.start();
 
- var options = {
- 	userName: channelOwner, // mandatory
- 	realName: 'nodeJS IRC client',
- 	// port: 6667,
- 	// localAddress: null,
- 	debug: true,
- 	showErrors: true,
- 	// autoRejoin: false,
- 	autoConnect: false,
- 	// channels: [channel],
- 	// secure: false,
- 	// selfSigned: falsße,
- 	// certExpired: false,
- 	// floodProtection: false,
- 	// floodProtectionDelay: 1000,
- 	sasl: true, // mandatory
- 	password: password // twitch token
- 		// stripColors: false,
- 		// channelPrefixes: "&#",
- 		// messageSplit: 512,
- 		// encoding: ''
- };
- // talk to twitch
- var client = new irc.Client('irc.twitch.tv', channelOwner, options);
- var currentVotes = {};
  var consumeVotes = function() {
  	var votes = [];
- 	Object.keys(currentVotes).forEach(function(key) {
- 		votes.push(currentVotes[key]);
+ 	Object.keys(twitch.currentVotes).forEach(function(key) {
+ 		votes.push(twitch.currentVotes[key]);
  		console.log("votes are: ", votes);
  	});
  	// here's where we'd get the valid ones
  	var legalMoves = game.getValidMoves(votes);
  	// console.log(chalk.green("legalMoves are: "), legalMoves);
  	console.log(countVotes(legalMoves));
- 	currentVotes = {};
+ 	twitch.currentVotes = {};
  };
 
  setInterval(consumeVotes, 15000);
@@ -93,12 +80,12 @@
  };
 
  var sortVotes = function(votes) {
- 	
+
  	var sortedVotes = [];
  	var done = false;
 
  	Object.keys(votes).forEach(function(language) {
- 		
+
  		for (var i = 0; i < sortedVotes.length && !done; i++) {
  			console.log("language", language, "votes[language]", votes[language]);
  			if (sortedVotes.length === 0) {
@@ -127,34 +114,4 @@
  	return (sortedVotes);
  };
 
-console.log(sortVotes(values));
-
- client.connect(function() {
- 	console.log(channel);
- 	client.join(channel, function() {
- 		client.say(channel, "Hello Twitch!");
- 		client.addListener('message', function(from, to, message) {
- 			if (from !== channelOwner) {
- 				// global map of all msg
- 				currentVotes[from] = message;
- 			}
- 			console.log(chalk.blue(from), chalk.magenta(to), message);
- 			// if (from !== channelOwner) {
- 			//  client.say(channel, message);
- 			// }
- 			// // put in db
- 			// db.serialize(function() {
- 			//  // preparing a statement
- 			//  var stmt = db.prepare("INSERT INTO Game_Command_History VALUES (?, ?)");
- 			//  stmt.run("msg:" + message, from);
- 			//  stmt.finalize();
- 			//  // give me these things in the db - query Game_Command_History
- 			//  db.each("SELECT rowid AS id, command, user FROM Game_Command_History", function(err, row) {
- 			//      console.log(row);
- 			//      console.log(row.id + ": " + row.command + ": " + row.user);
- 			//  });
- 			// });
- 			// db.close();
- 		});
- 	});
- });
+ console.log(sortVotes(twitch.currentVotes));
