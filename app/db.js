@@ -1,29 +1,37 @@
-var fs = require('fs');
-// writing async funcs using threadpool removes stack trace info
-// see errors but not which statement caused it
-// to resolve this issue -> verbose()
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('data.db');
-// return true if the file exists
-fs.exists('data.db', function(exists) {
-	db.serialize(function() {
+"use strict"
+
+let fs = require('fs');
+let sqlite3 = require('sqlite3').verbose();
+
+let db = new sqlite3.Database('data.db');
+
+fs.exists('data.db', exists => {
+	db.serialize(() => {
 		if (!exists) {
 			// create a table called Game_Command_History
-			db.run("CREATE TABLE Game_Command_History (command TEXT, user TEXT)");
+			db.run("CREATE TABLE Game_Command_History (command TEXT, user TEXT, timeStamp TIMESTAMP default now())");
 		}
 	});
 });
 
-// put in db
-db.serialize(function() {
-	// preparing a statement
-	var stmt = db.prepare("INSERT INTO Game_Command_History VALUES (?, ?)");
-	stmt.run("msg:" + message, from);
-	stmt.finalize();
-	// give me these things in the db - query Game_Command_History
-	db.each("SELECT rowid AS id, command, user FROM Game_Command_History", function(err, row) {
-		console.log(row);
-		console.log(row.id + ": " + row.command + ": " + row.user);
-	});
-});
-db.close();
+module.exports = {
+
+	putInDb: (msg, from) => {
+		db.serialize(() => {
+			// preparing a statement
+			let stmt = db.prepare("INSERT INTO Game_Command_History (command, user) VALUES (?, ?)"); // protection against sql injection
+			stmt.run("msg:" + msg, from);
+			// statement is finished, save to db
+			stmt.finalize();
+			// give me these things in the db - query Game_Command_History
+			db.each("SELECT rowid AS id, command, user FROM Game_Command_History", (err, row) => {
+				console.log(row);
+				console.log(row.id + ": " + row.command + ": " + row.user);
+			});
+		});
+	},
+
+	close: () => {
+		db.close()
+	}
+};

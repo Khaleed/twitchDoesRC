@@ -30,7 +30,7 @@ let start = () => {
 					currentVotes[from] = message;
 				}
 				// put redis stuff here
-				console.log(from, to, message);
+				console.log("curret votes", currentVotes); // => { beardrc: 'moveUp()', kara: 'moveDown()', sal: 'moveUp()' }
 			});
 		});
 	});
