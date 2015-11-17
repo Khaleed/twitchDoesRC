@@ -1,6 +1,5 @@
  "use strict";
-
- let game = require('./game');
+ 
  let chalk = require('chalk');
  let twitch = require('./twitch');
  let keyhandler = require('./keyhandler');

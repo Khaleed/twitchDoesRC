@@ -37,10 +37,10 @@ let start = () => {
 };
 
 module.exports = {
-	getVotes: function () {
+	getVotes: function() {
 		return currentVotes;
 	},
-	clearVotes: function () {
+	clearVotes: function() {
 		return currentVotes = {};
 	},
 	start: start
