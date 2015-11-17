@@ -10,17 +10,23 @@
  let consumeVotes = () => {
  	let votes = twitch.getVotes();
  	console.log("consuming!!");
+ 	// mapping clean inputs to keyboard moves
+ 	let inputsToMoves = {
+ 		"moveLeft()": "left",
+ 		"moveRight()": "right",
+ 		"moveUp()": "up",
+ 		"moveDown()": "down",
+ 	};
  	// get the keys from the vote counter
  	let inputs = Object.keys(votes).map(key => votes[key]);
  	console.log(Object.keys(votes), inputs);
  	// filter the ones that are not legal
- 	let legalMoves = ["moveLeft()", "moveRight()", "moveUp()", "moveDown()"]
  	// sort the keys
  	// maps the clean inputs to a sequence of tuples (a fixed array)
  	 		  // map it to a list of dictionary
  		  // ["left", "right"] -> [ {input: "left", votes: 40}, {input:"right", votes:20} ]
 
- 	let filteredInputs = inputs.filter(input => legalMoves.indexOf(input) !== -1);
+ 	let filteredInputs = inputs.filter(input => inputsToMoves.hasOwnProperty(input)); 
 	console.log(votes, filteredInputs);
  	// no legal moves
  	if (filteredInputs.length == 0) {
@@ -38,13 +44,7 @@
  		  		return top;
  		  	}
  		}).input;
- 	// mapping clean inputs to keyboard moves
- 	let inputsToMoves = {
- 		"moveLeft()": "left",
- 		"moveRight()": "right",
- 		"moveUp()": "up",
- 		"moveDown()": "down",
- 	}
+ 	
  	// tell don't ask principle
  	console.log("moving with", finalInput);
  	// we are sending the highest voted clean input a key 
