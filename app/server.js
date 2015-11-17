@@ -1,75 +1,75 @@
  "use strict";
 
- var fs = require("fs");
- var game = require('./game');
- var chalk = require('chalk');
- var twitch = require('./twitch');
+ let game = require('./game');
+ let chalk = require('chalk');
+ let twitch = require('./twitch');
+ let keyhandler = require('./keyhandler');
 
  // tell client to connect
  twitch.start();
 
- var consumeVotes = function() {
- 	var votes = [];
- 	Object.keys(twitch.currentVotes).forEach(function(key) {
- 		votes.push(twitch.currentVotes[key]);
- 		console.log("votes are: ", votes);
- 	});
- 	// here's where we'd get the valid ones
- 	var legalMoves = game.getValidMoves(votes);
- 	console.log(countVotes(legalMoves));
- 	twitch.currentVotes = {};
+ let consumeVotes = () => {
+ 	let votes = twitch.getVotes();
+ 	console.log("consuming!!");
+ 	// get the keys from the vote counter
+ 	let inputs = Object.keys(votes).map(key => votes[key]);
+ 	console.log(Object.keys(votes), inputs);
+ 	// filter the ones that are not legal
+ 	let legalMoves = ["moveLeft()", "moveRight()", "moveUp()", "moveDown()"]
+ 	// sort the keys
+ 	// maps the clean inputs to a sequence of tuples (a fixed array)
+ 	 		  // map it to a list of dictionary
+ 		  // ["left", "right"] -> [ {input: "left", votes: 40}, {input:"right", votes:20} ]
+
+ 	let filteredInputs = inputs.filter(input => legalMoves.indexOf(input) !== -1);
+	console.log(votes, filteredInputs);
+ 	// no legal moves
+ 	if (filteredInputs.length == 0) {
+ 		twitch.clearVotes();
+ 		return setTimeout(consumeVotes, 5000);
+ 	}
+
+ 	let finalInput = filteredInputs.map(input => {
+ 		  	return {input: input, votes: votes[input]}
+ 		  }).reduce((top, current) => {
+ 		  	// [ {input: "left", votes: 40}, {input:"right", votes:20} ]
+ 		  	if (top.votes < current.votes) {
+ 		  		return current;
+ 		  	} else {
+ 		  		return top;
+ 		  	}
+ 		}).input;
+ 	// mapping clean inputs to keyboard moves
+ 	let inputsToMoves = {
+ 		"moveLeft()": "left",
+ 		"moveRight()": "right",
+ 		"moveUp()": "up",
+ 		"moveDown()": "down",
+ 	}
+ 	// tell don't ask principle
+ 	console.log("moving with", finalInput);
+ 	// we are sending the highest voted clean input a key 
+ 	keyhandler.sendKey(inputsToMoves[finalInput]);
+
+ 	// ["up". "down", "left", "right"]
+ 	// [30. 24, 40, 1]
+
+ 	// ["left", "up". "down", "right"]
+ 	//["left", "right"]
+
+ 	// a , f, 'a
+ 	// 'a is the map of a via the result of applying a to f
+ 	// [1 2 3 4] -> doubleTheNumbers -> [2 4 5 8]
+
+ 	// we need to get the index of the highest number
+ 	
+ 	// get the one with highest votes
+
+ 	twitch.clearVotes();
+ 	setTimeout(consumeVotes, 5000);
  };
 
- setInterval(consumeVotes, 15000);
+ // time stamp
 
- var countVotes = function(voteList) {
- 	return voteList.reduce(function(result, current) {
- 		console.log(result, current, voteList);
- 		if (typeof(result[current]) === "undefined") {
- 			result[current] = 1;
- 		} else {
- 			result[current] += 1;
- 		}
- 		return result;
- 	}, {});
- };
-
- var sortVotes = function(votes) {
-
- 	var sortedVotes = [];
- 	var done = false;
-
- 	Object.keys(votes).forEach(function(move) {
-
- 		for (var i = 0; i < sortedVotes.length && !done; i++) {
- 			console.log("move", move, "votes[move]", votes[move]);
- 			if (sortedVotes.length === 0) {
- 				sortedVotes.push({
- 					"moveName": move,
- 					"totalVotes": votes[move]
- 				});
- 				done = true;
- 			} else if (votes[move] > sortedVotes[i]["totalVotes"]) {
- 				sortedVotes.splice(i, 0, {
- 					"moveName": move,
- 					"totalVotes": votes[move]
- 				});
- 				done = true;
- 			}
- 		}
- 		if (!done) {
- 			sortedVotes.push({
- 				"moveName": move,
- 				"totalVotes": votes[move]
- 			});
- 		}
- 		done = false;
- 	});
- 	return (sortedVotes);
- };
-
- var mapVotesToKey = function() {
-
- };
- // currently showing command votes that are in play 
- console.log(sortVotes(twitch.currentVotes));
+ console.log("launching!!");
+ setTimeout(consumeVotes, 5000);

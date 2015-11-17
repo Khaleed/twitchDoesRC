@@ -1,9 +1,11 @@
-var irc = require('irc');
-var channelOwner = process.env.TWITCH_USER;
-var password = process.env.TWITCH_AUTH;
-var channel = '#' + channelOwner;
+"use strict"
 
-var options = {
+let irc = require('irc');
+let channelOwner = process.env.TWITCH_USER;
+let password = process.env.TWITCH_AUTH;
+let channel = '#' + channelOwner;
+
+let options = {
 	userName: channelOwner,
 	realName: 'nodeJS IRC client',
 	debug: true,
@@ -13,16 +15,16 @@ var options = {
 	password: password // twitch token
 };
 
-var currentVotes = {};
+let currentVotes = {};
 
-var start = function() {
+let start = () => {
 	// talk to twitch
 	var client = new irc.Client('irc.twitch.tv', channelOwner, options);
-	client.connect(function() {
+	client.connect(() => {
 		console.log(channel);
-		client.join(channel, function() {
+		client.join(channel, () => {
 			client.say(channel, "Hello Twitch!");
-			client.addListener('message', function(from, to, message) {
+			client.addListener('message', (from, to, message) => {
 				if (from !== channelOwner) {
 					// global map of all msg
 					currentVotes[from] = message;
@@ -35,6 +37,11 @@ var start = function() {
 };
 
 module.exports = {
-	currentVotes: currentVotes,
+	getVotes: function () {
+		return currentVotes;
+	},
+	clearVotes: function () {
+		return currentVotes = {};
+	},
 	start: start
 };
