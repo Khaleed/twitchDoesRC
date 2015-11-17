@@ -1,5 +1,6 @@
-// cannot use ES6 for this module
-var robot = require("robotjs");
+"use strict";
+
+let robot = require("robotjs");
 
 module.exports = {
 	sendKey: function (key) {

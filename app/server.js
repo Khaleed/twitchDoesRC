@@ -1,8 +1,7 @@
  "use strict";
-
+ 
  let twitch = require('./twitch');
  let keyhandler = require('./keyhandler');
- let db = require('./db');
 
  // tell client to connect
  twitch.start();

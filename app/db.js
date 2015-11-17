@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 let fs = require('fs');
 let sqlite3 = require('sqlite3').verbose();
@@ -7,10 +7,7 @@ let db = new sqlite3.Database('data.db');
 
 fs.exists('data.db', exists => {
 	db.serialize(() => {
-		if (!exists) {
-			// create a table called Game_Command_History
-			db.run("CREATE TABLE Game_Command_History (command TEXT, user TEXT, timeStamp TIMESTAMP default now())");
-		}
+		db.run("CREATE TABLE IF NOT EXISTS Game_Command_History (command TEXT, user TEXT, timeStamp TIMESTAMP default CURRENT_TIMESTAMP)");
 	});
 });
 
@@ -24,9 +21,9 @@ module.exports = {
 			// statement is finished, save to db
 			stmt.finalize();
 			// give me these things in the db - query Game_Command_History
-			db.each("SELECT rowid AS id, command, user FROM Game_Command_History", (err, row) => {
+			db.each("SELECT rowid AS id, command, user, timeStamp FROM Game_Command_History", (err, row) => {
 				console.log(row);
-				console.log(row.id + ": " + row.command + ": " + row.user);
+				console.log(row.id + ": " + row.command + ": " + row.user + ": " + row.timeStamp);
 			});
 		});
 	},

@@ -1,6 +1,7 @@
 "use strict"
 
 let irc = require('irc');
+let db = require('./db');
 let channelOwner = process.env.TWITCH_USER;
 let password = process.env.TWITCH_AUTH;
 let channel = '#' + channelOwner;
@@ -29,7 +30,10 @@ let start = () => {
 					// global map of all msg
 					currentVotes[from] = message;
 				}
-				// put redis stuff here
+				// put sqlite stuff here
+				Object.keys(currentVotes).map(from => {
+					db.putInDb(currentVotes[from], from);
+				});
 				console.log("curret votes", currentVotes); // => { beardrc: 'moveUp()', kara: 'moveDown()', sal: 'moveUp()' }
 			});
 		});
