@@ -1,5 +1,5 @@
  "use strict";
-
+ 
  let twitch = require('./twitch');
  let keyhandler = require('./keyhandler');
 
@@ -26,17 +26,13 @@
  			input: input,
  			votes: votes[input]
  		}
- 	}).reduce((topList, current) => {
- 		// [ {input: "left", votes: 40}, {input:"right", votes:20} ]
- 		let top = topList[0];
- 		if (current.votes === top.votes) {
- 			return topList.push(current);
+ 	}).reduce((top, current) => { // [ {input: "left", votes: 40}, {input:"right", votes:20} ]
+ 		if (top.votes < current.votes) {
+ 			return current;
  		} else {
- 			return topList[Math.floor(Math.random() * topList.length)];
+ 			return top;
  		}
- 	}, [{
- 		votes: 0
- 	}]).input;
+ 	}).input;
  	console.log("moving with", inputsToMoves[finalInput]);
  	keyhandler.sendKey(inputsToMoves[finalInput]);
  	twitch.clearVotes();
