@@ -1,9 +1,22 @@
  "use strict";
- 
+
  let twitch = require('./twitch');
  let keyhandler = require('./keyhandler');
 
  twitch.start();
+
+ let resetVotes = () => {
+ 	twitch.clearVotes();
+ 	return setTimeout(consumeVotes, 10000);
+ };
+
+ let countVotes = (inputs) => {
+ 	return inputs.reduce((voteTally, input) => {
+ 		voteTally[input] = voteTally[input] || 0;
+ 		voteTally[input]++;
+ 		return voteTally;
+ 	}, {});
+ }
 
  let consumeVotes = () => {
  	let votes = twitch.getVotes();
@@ -15,28 +28,31 @@
  		"moveUp()": "up",
  		"moveDown()": "down"
  	};
- 	let filteredInputs = inputs.filter(input => inputsToMoves.hasOwnProperty(input));
- 	// no legal moves
- 	if (filteredInputs.length == 0) {
- 		twitch.clearVotes();
- 		return setTimeout(consumeVotes, 10000);
+
+ 	let validInputs = inputs.filter(input => inputsToMoves.hasOwnProperty(input));
+
+ 	if (validInputs.length == 0) {
+ 		return resetVotes();
  	}
- 	let finalInput = filteredInputs.map(input => {
- 		return {
- 			input: input,
- 			votes: votes[input]
- 		}
- 	}).reduce((top, current) => { // [ {input: "left", votes: 40}, {input:"right", votes:20} ]
- 		if (top.votes < current.votes) {
- 			return current;
- 		} else {
- 			return top;
- 		}
- 	}).input;
- 	console.log("moving with", inputsToMoves[finalInput]);
+
+ 	let voteTally = countVotes(validInputs);
+
+ 	// get the top most voted move
+ 	let max = Object.keys(voteTally).reduce((max, input) => {
+ 		return voteTally[input] > max ? voteTally[input] : max;
+ 	}, 0);
+
+ 	let maxVotedInputs = Object.keys(voteTally).filter((input) => {
+ 		return voteTally[input] === max;
+ 	});
+
+ 	let finalInput = maxVotedInputs[Math.floor(Math.random() * maxVotedInputs.length)];
+
+ 	console.log("moving with", voteTally, max, maxVotedInputs, inputsToMoves[finalInput]);
  	keyhandler.sendKey(inputsToMoves[finalInput]);
- 	twitch.clearVotes();
- 	setTimeout(consumeVotes, 10000);
+ 	resetVotes();
  };
  console.log("launching!!");
  setTimeout(consumeVotes, 10000);
+
+ // test filters
