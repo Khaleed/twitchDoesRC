@@ -2,11 +2,10 @@
 
  let twitch = require('./twitch');
  let keyhandler = require('./keyhandler');
- 
+
  twitch.start();
 
  let consumeVotes = () => {
- 	
  	let votes = twitch.getVotes();
  	console.log("consuming!!");
  	let inputs = Object.keys(votes).map(key => votes[key]);
@@ -16,14 +15,12 @@
  		"moveUp()": "up",
  		"moveDown()": "down"
  	};
- 	
- 	let filteredInputs = inputs.filter(input => inputsToMoves.hasOwnProperty(input)); 
-	// no legal moves
+ 	let filteredInputs = inputs.filter(input => inputsToMoves.hasOwnProperty(input));
+ 	// no legal moves
  	if (filteredInputs.length == 0) {
  		twitch.clearVotes();
- 		return setTimeout(consumeVotes, 5000);
+ 		return setTimeout(consumeVotes, 10000);
  	}
-
  	let finalInput = filteredInputs.map(input => {
  		return {
  			input: input,
@@ -37,12 +34,13 @@
  		} else {
  			return topList[Math.floor(Math.random() * topList.length)];
  		}
- 	}, [{votes: 0}]).input;
-
+ 	}, [{
+ 		votes: 0
+ 	}]).input;
+ 	console.log("moving with", inputsToMoves[finalInput]);
  	keyhandler.sendKey(inputsToMoves[finalInput]);
  	twitch.clearVotes();
- 	setTimeout(consumeVotes, 5000);
+ 	setTimeout(consumeVotes, 10000);
  };
-
  console.log("launching!!");
- setTimeout(consumeVotes, 5000);
+ setTimeout(consumeVotes, 10000);
