@@ -3,7 +3,7 @@ var path = require('path')
 module.exports = {
     devtool: 'source-map',
     entry: {
-        public: ['./public/main.js']
+        public: ['./public/game.js']
     },
     devServer: {
         contentBase: "public/"
