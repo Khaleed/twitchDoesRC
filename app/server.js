@@ -16,7 +16,7 @@
  		voteTally[input]++;
  		return voteTally;
  	}, {});
- }
+ };
 
  let consumeVotes = () => {
  	let votes = twitch.getVotes();
@@ -48,7 +48,7 @@
 
  	let finalInput = maxVotedInputs[Math.floor(Math.random() * maxVotedInputs.length)];
 
- 	console.log("moving with", voteTally, max, maxVotedInputs, inputsToMoves[finalInput]);
+ 	console.log("moving with", inputsToMoves[finalInput]);
  	keyhandler.sendKey(inputsToMoves[finalInput]);
  	resetVotes();
  };
