@@ -23,6 +23,7 @@
  	// 	twitchuser: "moveUp()", ...
  	// }
  	let votes = twitch.getVotes();
+ 	console.log(votes);
 
  	// [ "moveUp()", "moveDown()", 'moveDown()', 'MoveDown()', 'moveFront()' ...] 
  	let inputs = Object.keys(votes).map(key => votes[key]);
