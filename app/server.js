@@ -54,5 +54,3 @@
  };
  console.log("launching!!");
  setTimeout(consumeVotes, 10000);
-
- // test filters
