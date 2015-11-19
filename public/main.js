@@ -1,21 +1,25 @@
-var ROWS = 40;
-var COLUMNS = 40;
-var GRID_SIZE = 10;
+"use strict";
 
-var screen = document.getElementById("screen")
-    .getContext("2d");
+// paired with Mary 
 
-var COLOURS = {
+let ROWS = 40;
+let COLUMNS = 40;
+let GRID_SIZE = 10;
+
+let screen = document.getElementById("screen")
+  .getContext("2d");
+
+let COLOURS = {
   "m": "grey",
   "c": "yellow",
   "": "black"
 };
 
 function createBoard(rows, columns) {
-  var board = [];
-  for (var y = 0; y < columns; y++) {
+  let board = [];
+  for (let y = 0; y < columns; y++) {
     board.push([]);
-    for (var x = 0; x < columns; x++) {
+    for (let x = 0; x < columns; x++) {
       board[y].push("");
     }
   }
@@ -30,8 +34,8 @@ function isGameWon(board) {
 };
 
 function sqToCo(square, gridSize) {
-  var x = square.x * gridSize;
-  var y = square.y * gridSize;
+  let x = square.x * gridSize;
+  let y = square.y * gridSize;
   return {
     x: x,
     y: y
@@ -39,39 +43,57 @@ function sqToCo(square, gridSize) {
 };
 
 function addMouseAndCheeseToBoard(board) {
-  var centerY = Math.floor(board.length / 2);
-  var centerX = Math.floor(board[centerY].length / 2);
+  let centerY = Math.floor(board.length / 2);
+  let centerX = Math.floor(board[centerY].length / 2);
   board[centerY][centerX] = "m";
   board[centerY - 3][centerX + 3] = "c";
 };
 
 function drawBoard(screen, board, gridSize) {
   screen.clearRect(0,
-                   0,
-                   board[0].length * gridSize,
-                   board.length * gridSize);
+    0,
+    board[0].length * gridSize,
+    board.length * gridSize);
 
-  for (var y = 0; y < board.length; y++) {
-    for (var x = 0; x < board[y].length; x++) {
+  for (let y = 0; y < board.length; y++) {
+    for (let x = 0; x < board[y].length; x++) {
       screen.fillStyle = COLOURS[board[y][x]];
-      var co = sqToCo({ x: x, y: y }, gridSize);
+      let co = sqToCo({
+        x: x,
+        y: y
+      }, gridSize);
       screen.fillRect(co.x, co.y, gridSize, gridSize);
     }
   }
 };
 
-var MOVES = {
-  left: { x: -1, y: 0 },
-  right: { x: 1, y: 0 },
-  up: { x: 0, y: -1 },
-  down: { x: 0, y: 1 }
+let MOVES = {
+  left: {
+    x: -1,
+    y: 0
+  },
+  right: {
+    x: 1,
+    y: 0
+  },
+  up: {
+    x: 0,
+    y: -1
+  },
+  down: {
+    x: 0,
+    y: 1
+  }
 };
 
 function objectCoordinates(board, thing) {
-  for (var y = 0; y < board.length; y++) {
-    for (var x = 0; x < board[y].length; x++) {
+  for (let y = 0; y < board.length; y++) {
+    for (let x = 0; x < board[y].length; x++) {
       if (board[y][x] === thing) {
-        return { x: x, y: y };
+        return {
+          x: x,
+          y: y
+        };
       }
     }
   }
@@ -89,8 +111,8 @@ function boardSet(board, coordinates, value) {
 };
 
 function move(board, vector) {
-  var mouseCo = objectCoordinates(board, "m");
-  var newMouseCo = {
+  let mouseCo = objectCoordinates(board, "m");
+  let newMouseCo = {
     x: mouseCo.x + vector.x,
     y: mouseCo.y + vector.y
   };
@@ -101,7 +123,7 @@ function move(board, vector) {
   }
 };
 
-var KEYS = {
+let KEYS = {
   "left": 37,
   "right": 39,
   "down": 40,
@@ -110,32 +132,34 @@ var KEYS = {
 };
 
 function setupKeyboardInput(inputter) {
-  var keyState = {};
+  let keyState = {};
 
-  window.addEventListener("keydown", function(e) {
+  window.addEventListener("keydown", e => {
     keyState[e.keyCode] = true;
   });
 
-  window.addEventListener("keyup", function(e) {
+  window.addEventListener("keyup", e => {
     keyState[e.keyCode] = false;
   });
 
-  setInterval(function () {
+  setInterval(() => {
     Object.keys(KEYS)
-      .filter(function(moveStr) { return keyState[KEYS[moveStr]]; })
+      .filter(moveStr => {
+        return keyState[KEYS[moveStr]];
+      })
       .forEach(inputter);
   }, 100);
 };
 
 function setupGame() {
-  var board = createBoard(ROWS, COLUMNS);
+  let board = createBoard(ROWS, COLUMNS);
   setupKeyboardInput(inputter);
 
   function render() {
     drawBoard(screen, board, GRID_SIZE);
-    var gameState = isGameWon(board) ?
-        "Game over. Mouse got the cheese! Send 'restart' to restart." :
-        "";
+    let gameState = isGameWon(board) ?
+      "Game over. Mouse got the cheese! Send 'restart' to restart." :
+      "";
     document.getElementById("result").innerHTML = gameState;
     requestAnimationFrame(render);
   };
@@ -150,7 +174,7 @@ function setupGame() {
         return;
       }
     } else {
-      var moveVector = MOVES[moveStr];
+      let moveVector = MOVES[moveStr];
       if (moveVector === undefined) {
         throw new Error("Move " + moveStr + " is invalid.");
       } else {
@@ -162,4 +186,4 @@ function setupGame() {
   return inputter;
 };
 
-var inputter = setupGame();
+let inputter = setupGame();
