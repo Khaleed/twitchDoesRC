@@ -34,7 +34,7 @@ let start = () => {
 				Object.keys(currentVotes).map(from => {
 					db.putInDb(currentVotes[from], from);
 				});
-				console.log("curret votes", currentVotes); 
+				console.log("curret votes", currentVotes);
 				// => { beardrc: 'moveUp()', kara: 'moveDown()', sal: 'moveUp()' }
 			});
 		});
@@ -42,11 +42,11 @@ let start = () => {
 };
 
 module.exports = {
+	start: start,
 	getVotes: function() {
 		return currentVotes;
 	},
 	clearVotes: function() {
 		return currentVotes = {};
-	},
-	start: start
+	}
 };
