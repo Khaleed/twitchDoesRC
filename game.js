@@ -1,6 +1,6 @@
 "use strict";
 
-// paired with Mary 
+// Paired with Mary on this Small Game for Twitch Plays X Project 
 
 let ROWS = 40;
 let COLUMNS = 40;
@@ -23,9 +23,7 @@ function createBoard(rows, columns) {
       board[y].push("");
     }
   }
-
   addMouseAndCheeseToBoard(board);
-
   return board;
 };
 
