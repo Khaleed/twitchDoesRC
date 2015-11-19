@@ -1,5 +1,5 @@
  "use strict";
-
+ 
  let twitch = require('./twitch');
  let keyhandler = require('./keyhandler');
 
