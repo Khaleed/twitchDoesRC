@@ -1,8 +1,8 @@
 # twitchdoesrc
 
-This is an experiment to stream a multiple player chat-command controlled activity using Node, Express, Twitch, IRC Protocol, Socket.IO, Redis, SQLite. 
+This is an experiment to control any game through Twitch messages from a group of people using Node, Express, Twitch, IRC Protocol, Socket.IO, SQLite. 
 
-This will eventually be written in a functional JavaScript style using persistent data structures from the MORI ClojureScript library.  
+This project will eventually be written in a functional JavaScript style using persistent data structures from the MORI ClojureScript library.  
 
 ## How To Message Someone on Twitch
 
@@ -16,4 +16,4 @@ We can pass a callback to join and send a message.
 
 Note the `#` before the username, this tells IRC we're trying to send a message to a users *channel* and not to private message a user.
 
-Twitch does not support private messaging for bots.
+Twitch does not support private messaging for bots. 

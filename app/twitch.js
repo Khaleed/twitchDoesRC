@@ -35,7 +35,7 @@ let start = () => {
 					db.putInDb(currentVotes[from], from);
 				});
 				console.log("curret votes", currentVotes);
-				// => { beardrc: 'moveUp()', kara: 'moveDown()', sal: 'moveUp()' }
+				// => { beardrc: 'up()', kara: 'down()', sal: 'up()' }
 			});
 		});
 	});

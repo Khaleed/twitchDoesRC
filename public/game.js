@@ -1,6 +1,6 @@
 "use strict";
 
-// Paired with Mary on this Small Game for Twitch Plays X Project 
+// Paired with Mary on this Small Game as a Proof of Concept for Twitch Plays X Project 
 
 let ROWS = 40;
 let COLUMNS = 40;
