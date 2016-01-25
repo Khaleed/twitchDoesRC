@@ -1,6 +1,7 @@
 "use strict";
 
 // Paired with Mary on this Small Game as a Proof of Concept for Twitch Plays X Project 
+// Group of people playing on Twitch guide a mouse to the cheese
 
 let ROWS = 40;
 let COLUMNS = 40;
