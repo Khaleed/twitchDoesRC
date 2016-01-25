@@ -24,9 +24,9 @@
     "chalk": "^1.1.1",
     "irc": "^0.4.0",
     "lodash": "^3.10.1",
-    "redis": "^2.3.0",
     "robotjs": "^0.3.3",
     "sqlite3": "^3.1.1",
+    "webpack": "^1.12.12",
     "webpack-dev-server": "^1.12.1"
   }
 }
