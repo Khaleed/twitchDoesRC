@@ -54,6 +54,7 @@
 	"use strict";
 	
 	// Paired with Mary on this Small Game as a Proof of Concept for Twitch Plays X Project
+	// Group of people playing on Twitch guide a mouse to the cheese
 	
 	var _Object$keys = __webpack_require__(2)["default"];
 	

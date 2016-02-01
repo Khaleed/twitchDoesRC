@@ -9,7 +9,7 @@
  	twitch.clearVotes();
  	return setTimeout(consumeVotes, 5000);
  };
- 
+
  let countVotes = inputs => {
  	return inputs.reduce((voteTally, input) => {
  		voteTally[input] = voteTally[input] || 0;
@@ -39,10 +39,10 @@
  	if (validInputs.length == 0) {
  		return resetVotes();
  	}
- 	
+
  	// {up(): 1, down(): 2}
  	let voteTally = countVotes(validInputs);
- 	
+
  	// get the top most voted move
  	let max = Object.keys(voteTally).reduce((max, input) => {
  		// (0, voteTally["up()"])
@@ -50,7 +50,7 @@
  		// 2
  		return voteTally[input] > max ? voteTally[input] : max;
  	}, 0);
- 	
+
  	// [ "up()", "down()"] -> ["down()"]
  	let maxVotedInputs = Object.keys(voteTally).filter((input) => {
  		return voteTally[input] === max;
