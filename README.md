@@ -1,8 +1,8 @@
 # twitchDoesRC
 
-This is an experiment to control any game through Twitch messages from a group of people using Node, Express, Twitch, IRC Protocol, Socket.IO, SQLite. 
+This is an experiment to control any game through Twitch messages from a group of people using Node, Express, Twitch, IRC Protocol, SQLite. 
 
-This project will eventually be written in a functional JavaScript style using persistent data structures from the MORI ClojureScript library.  
+Where possible, functional JavaScript style is adopted using map, reduce, and filter. 
 
 The project was to learn more back-end operations using streams as a data structure, and how to resolve complex architectural problems in a simple yet elegant manner. 
 
