@@ -1,6 +1,6 @@
 # twitchDoesRC
 
-This is an experiment to control any game through Twitch messages from a group of people using Node, Express, Twitch, IRC Protocol, SQLite. 
+This is an experiment to control any game through Twitch messages from a group of people using Node, Twitch API, IRC Protocol, SQLite. 
 
 Where possible, functional JavaScript style is adopted using map, reduce, and filter. 
 
