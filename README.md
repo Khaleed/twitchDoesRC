@@ -22,6 +22,11 @@ Twitch does not support private messaging for bots.
 
 ## Proof of Concept
 
-I made a small game called mouse with Mary Rose Cook to test that twitchDoesRC works. A group of recursers on Twitch were able to play and guide a mouse (grey square) to the cheese (yellow) in a live demo. The simple game can be seen here http://khaleed.github.io/twitchDoesRC
+Used a small game called mouse to test twitchDoesRC. A group of recursers on Twitch were able to play and guide a mouse (grey square) to the cheese (yellow sqaure) in a live demo. The game can be seen here http://khaleed.github.io/twitchDoesRC
+
+## Contributors
+
+Kara McNair
 
 <a href='http://www.recurse.com' title='Made with love at the Recurse Center'><img src='https://cloud.githubusercontent.com/assets/2883345/11322972/9e553260-910b-11e5-8de9-a5bf00c352ef.png' height='59px'/></a>
+
