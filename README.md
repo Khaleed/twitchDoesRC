@@ -10,7 +10,7 @@ The aim of the project was to learn more about back-end operations using streams
 
 Twitch implements every user as an IRC channel.
 
-To join someones twitch channel
+To join someone's twitch channel
 
 `irc.join("#username",[callback])`
 
@@ -26,7 +26,7 @@ Used a small game called mouse to test twitchDoesRC. A group of recursers on Twi
 
 ## Contributors
 
-Kara McNair
+[Kara McNair](https://github.com/karamcnair)
 
 <a href='http://www.recurse.com' title='Made with love at the Recurse Center'><img src='https://cloud.githubusercontent.com/assets/2883345/11322972/9e553260-910b-11e5-8de9-a5bf00c352ef.png' height='59px'/></a>
 
